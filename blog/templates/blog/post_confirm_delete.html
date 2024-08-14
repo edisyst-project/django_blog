@@ -1,0 +1,10 @@
+{% extends "blog/base.html" %}
+{% block title %}Conferma Eliminazione{% endblock %}
+{% block content %}
+<h2>Sei sicuro di voler eliminare "{{ post.title }}"?</h2>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Elimina</button>
+    <a href="{% url 'post-detail' post.pk %}" class="btn btn-secondary">Annulla</a>
+</form>
+{% endblock %}
