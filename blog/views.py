@@ -3,6 +3,9 @@ from .forms import PostForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Comment
+from .forms import CommentForm
 
 
 def about(request):
@@ -38,11 +41,27 @@ def post_list(request):
     return render(request, 'blog/post_list.html', context)
 
 
-
-
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    comments = post.comments.all()
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post-detail', pk=post.pk)
+    else:
+        form = CommentForm()
+
+    context = {
+        'post': post,
+        'comments': comments,
+        'form': form
+    }
+    return render(request, 'blog/post_detail.html', context)
+
 
 def post_create(request):
     if request.method == 'POST':

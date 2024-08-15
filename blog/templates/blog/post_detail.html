@@ -1,15 +1,34 @@
 {% extends "blog/base.html" %}
-{% block title %}{{ post.title }}{% endblock %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
 {% block content %}
-<article class="media content-section">
-    <div class="media-body">
-        <h2 class="mt-0">{{ post.title }}</h2>
-        <p class="text-muted">By {{ post.author }} on {{ post.date_posted }}</p>
-        <hr>
-        <p>{{ post.content }}</p>
+<div class="card mb-3">
+    <div class="card-body">
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text"><small class="text-muted">By {{ post.author }} on {{ post.date_posted }}</small></p>
     </div>
-</article>
-<a class="btn btn-secondary" href="{% url 'blog-home' %}">Back to Home</a>
-<a href="{% url 'post-update' post.pk %}" class="btn btn-warning">Modifica Post</a>
-<a href="{% url 'post-delete' post.pk %}" class="btn btn-danger">Elimina Post</a>
+</div>
+
+<h4>Comments</h4>
+{% for comment in comments %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ comment.content }}</p>
+            <p class="card-text"><small class="text-muted">By {{ comment.name }} on {{ comment.date_posted }}</small></p>
+        </div>
+    </div>
+{% empty %}
+    <p>No comments yet. Be the first to comment!</p>
+{% endfor %}
+
+<h4>Add a Comment</h4>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Post Comment</button>
+</form>
 {% endblock %}

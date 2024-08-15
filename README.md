@@ -13,7 +13,6 @@ Ottimizzazione e Migliorie di UI: Implementare altre migliorie usando Bootstrap 
 
 # Installazione
 
-
 ```bash
 # Clonare il repository
 git clone https://github.com/tuo-username/django_blog.git
