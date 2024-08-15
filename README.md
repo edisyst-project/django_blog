@@ -1,27 +1,8 @@
-# Django Blog Project
-Il progetto include funzionalità di creazione, aggiornamento, cancellazione e visualizzazione di post, paginazione e ordinamento.
-
-## Requisiti
-- Python 3.8 o superiore
-- Django 3.2 o superiore
-- Pipenv (opzionale, per gestire gli ambienti virtuali)
-
-## Installazione
-
-### 1. Clonare il repository
-
-```bash
-git clone https://github.com/tuo-username/django_blog.git
-cd django_blog
-
-
-
-CERCARE uqesta roba
-Commenti sui Post: Consenti agli utenti di commentare i post.
-
 Sistema di Tag: Aggiungere tag ai post e la possibilità di filtrare i post per tag.
 
 Ricerca nel Blog: Implementare una funzionalità di ricerca per i post.
+
+Commenti sui Post: Consenti agli utenti di commentare i post.
 
 Sistema di Autorizzazioni Personalizzate: Gestire i permessi in modo più granulare.
 
@@ -30,37 +11,53 @@ Ottimizzazione e Migliorie di UI: Implementare altre migliorie usando Bootstrap 
 
 
 
+# Installazione
 
-Django segue il pattern architetturale Model-View-Template (MVT), che è simile al più noto Model-View-Controller (MVC).
 
+```bash
+# Clonare il repository
+git clone https://github.com/tuo-username/django_blog.git
+cd django_blog
+
+# OPZIONALE. Qualora non sia installato nel PC, installare Django
 pip install django
 
+# OPZIONALE. Creare un ambiente virtuale (se si usa Pipenv)
 pipenv install --dev
 pipenv shell
 
+# OPZIONALE. Creare un ambiente virtuale (se si usa venv)
 python3 -m venv venv
 source venv/bin/activate  # Su Windows: venv\Scripts\activate
 
+# OPZIONALE. Una volta attivato l'ambiente virtuale, installa le dipendenze
 pip install -r requirements.txt
 
+# OPZIONALE. Creare il file .env e scriverci dentro questo
 SECRET_KEY=tuo-secret-key
 DEBUG=True
 ALLOWED_HOSTS=127.0.0.1, .localhost
 
+# Eseguire le migrazioni del database
+python manage.py makemigrations
 python manage.py migrate
 
+# Popolare il database con dati fake
 python manage.py create_fake_posts --number 10
 
+# Creare un superutente
 python manage.py createsuperuser
 
-python manage.py runserver
-
+# Esecuzione dei test
 python manage.py test
 
-
+# Avvio server per eseguire l'applicazione
+python manage.py runserver
 ```
   
-## Sstruttura tipica di un progetto Django:
+
+
+# Filesystem di un progetto Django:
 ```
 myproject/
 ├── manage.py
@@ -72,6 +69,7 @@ myproject/
     └── wsgi.py
 ```
 
+Tipicamente avremo almeno una app installata nel progetto, che include i seguenti file
 ```
 nome_progetto/
 │
@@ -112,7 +110,7 @@ nome_progetto/
   * Definisce le rotte del progetto, simile a routes/web.php in Laravel.
 * `asgi.py` e `wsgi.py`: Punti di ingresso per server web compatibili con ASGI e WSGI.
 
-### Creare una App Django
+## Creare una App Django
 In Django, una "app" è un modulo indipendente all'interno del progetto, simile a un "modulo" in Laravel. Puoi avere più app in un progetto, e ogni app gestisce una parte dell'applicazione.
 
 `app1/` (un'applicazione Django)
@@ -131,8 +129,7 @@ In Django, una "app" è un modulo indipendente all'interno del progetto, simile 
 
 
 
-## Funzionamento di Django:
-
+## Funzionamento di Django
 URL Configuration:
 - Quando arriva una richiesta, Django cerca in urls.py una corrispondenza con l'URL richiesto.
 - Se trova una corrispondenza, chiama la vista associata.
