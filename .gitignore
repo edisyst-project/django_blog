@@ -1,0 +1,59 @@
+# Python specific
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Django specific
+*.sqlite3
+db.sqlite3
+/media/
+*.pot
+*.pyc
+
+# Environments
+.env
+*.env
+venv/
+ENV/
+env/
+.venv/
+.Python
+pip-log.txt
+
+# Django stuff:
+*.log
+staticfiles/
+*.pot
+*.pyc
+__pycache__/
+
+# VS Code
+.vscode/
+
+# My IDE specific
+.idea/
+
+# Migrations
+**/migrations/*
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Django extensions (dbshell)
+*.sql
+
+# Mypy
+.mypy_cache/
+
+# Coverage
+htmlcov/
+.coverage
