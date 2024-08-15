@@ -1,11 +1,20 @@
 from django import forms
-from .models import Post
-from .models import Comment
+from .models import Post, Tag, Comment
 
 class PostForm(forms.ModelForm):
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': forms.CheckboxSelectMultiple(),
+        }
+
 
 
 class CommentForm(forms.ModelForm):
