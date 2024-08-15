@@ -1,19 +1,43 @@
-from django.shortcuts import render, get_object_or_404
 from .models import Post
 from .forms import PostForm
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 
-def home(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/post_list.html', {'posts': posts})
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+
+
+def post_list(request):
+    sort_by = request.GET.get('sort', 'date_posted')  # Imposta il parametro di ordinamento, default è 'date_posted'
+    order = request.GET.get('order', 'desc')  # Imposta l'ordine, default è 'desc'
+
+    if sort_by == 'title':
+        if order == 'asc':
+            posts = Post.objects.all().order_by('title')
+        else:
+            posts = Post.objects.all().order_by('-title')
+    else:  # Ordina per data
+        if order == 'asc':
+            posts = Post.objects.all().order_by('date_posted')
+        else:
+            posts = Post.objects.all().order_by('-date_posted')
+
+    paginator = Paginator(posts, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'posts': page_obj,
+        'sort_by': sort_by,
+        'order': order
+    }
+
+    return render(request, 'blog/post_list.html', context)
+
+
 
 
 def post_detail(request, pk):
@@ -49,25 +73,6 @@ def post_delete(request, pk):
         post.delete()
         return redirect('blog-home')
     return render(request, 'blog/post_confirm_delete.html', {'post': post, 'title': 'Elimina Post'})
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account creato per {username}!')
-            return redirect('login')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {'form': form})
-
-class CustomLoginView(LoginView):
-    template_name = 'blog/login.html'
-    success_url = 'blog-home'
-
-class CustomLogoutView(LogoutView):
-    template_name = 'blog/logout.html'
 
 
 

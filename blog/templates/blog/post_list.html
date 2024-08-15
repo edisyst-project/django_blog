@@ -1,7 +1,17 @@
 {% extends "blog/base.html" %}
+
 {% block title %}Home{% endblock %}
+
 {% block content %}
 <h1>Blog Posts</h1>
+
+<div class="mb-3">
+    <a href="?sort=title&order=asc" class="btn btn-outline-secondary btn-sm">Titolo A-Z</a>
+    <a href="?sort=title&order=desc" class="btn btn-outline-secondary btn-sm">Titolo Z-A</a>
+    <a href="?sort=date_posted&order=asc" class="btn btn-outline-secondary btn-sm">Più Vecchi</a>
+    <a href="?sort=date_posted&order=desc" class="btn btn-outline-secondary btn-sm">Più Recenti</a>
+</div>
+
 {% for post in posts %}
 <div class="card mb-3">
     <div class="card-body">
@@ -11,4 +21,36 @@
     </div>
 </div>
 {% endfor %}
+
+<!-- Paginazione -->
+<nav aria-label="Paginazione">
+    <ul class="pagination">
+        {% if posts.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{% if sort_by %}sort={{ sort_by }}&{% endif %}{% if order %}order={{ order }}&{% endif %}page=1" aria-label="Prima">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?{% if sort_by %}sort={{ sort_by }}&{% endif %}{% if order %}order={{ order }}&{% endif %}page={{ posts.previous_page_number }}" aria-label="Precedente">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ posts.number }}</span></li>
+        {% if posts.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{% if sort_by %}sort={{ sort_by }}&{% endif %}{% if order %}order={{ order }}&{% endif %}page={{ posts.next_page_number }}" aria-label="Successiva">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?{% if sort_by %}sort={{ sort_by }}&{% endif %}{% if order %}order={{ order }}&{% endif %}page={{ posts.paginator.num_pages }}" aria-label="Ultima">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
 {% endblock %}

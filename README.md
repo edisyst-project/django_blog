@@ -1,3 +1,21 @@
+# Django Blog Project
+Il progetto include funzionalità di creazione, aggiornamento, cancellazione e visualizzazione di post, paginazione e ordinamento.
+
+## Requisiti
+- Python 3.8 o superiore
+- Django 3.2 o superiore
+- Pipenv (opzionale, per gestire gli ambienti virtuali)
+
+## Installazione
+
+### 1. Clonare il repository
+
+```bash
+git clone https://github.com/tuo-username/django_blog.git
+cd django_blog
+
+
+
 CERCARE uqesta roba
 Commenti sui Post: Consenti agli utenti di commentare i post.
 
@@ -14,8 +32,32 @@ Ottimizzazione e Migliorie di UI: Implementare altre migliorie usando Bootstrap 
 
 
 Django segue il pattern architetturale Model-View-Template (MVT), che è simile al più noto Model-View-Controller (MVC).
-```shell
+
 pip install django
+
+pipenv install --dev
+pipenv shell
+
+python3 -m venv venv
+source venv/bin/activate  # Su Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+SECRET_KEY=tuo-secret-key
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1, .localhost
+
+python manage.py migrate
+
+python manage.py create_fake_posts --number 10
+
+python manage.py createsuperuser
+
+python manage.py runserver
+
+python manage.py test
+
+
 ```
   
 ## Sstruttura tipica di un progetto Django:
