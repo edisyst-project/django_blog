@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 
 
 class Tag(models.Model):
+    """
+    Modello per rappresentare i tag associati ai post.
+    """
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
@@ -12,6 +15,9 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
+    """
+    Modello per rappresentare un post del blog.
+    """
     title = models.CharField(max_length=100)
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
@@ -33,6 +39,9 @@ def create_fake_posts(n=5):
 
 
 class Comment(models.Model):
+    """
+    Modello per rappresentare un commento su un post del blog.
+    """
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     content = models.TextField()

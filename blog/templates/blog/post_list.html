@@ -14,28 +14,20 @@
         </div>
     </form>
 
-    <!-- Filtro per tag -->
+    <!-- Sezione di filtro per tag (aggiornata per singolo tag) -->
     <div class="mb-3">
         <h5>Filtra per Tag:</h5>
         <ul class="list-inline">
             <li class="list-inline-item"><a href="{% url 'post-list' %}">Tutti</a></li>
             {% for tag in tags %}
             <li class="list-inline-item">
-                <a href="{% url 'post-list' %}?{% for t in request.GET.tag %}tag={{ t }}&{% endfor %}tag={{ tag.id }}" class="badge bg-danger">{{ tag.name }}</a>
+                <a href="{% url 'post-list' %}?tag={{ tag.id }}"
+                   class="badge {% if tag.id|stringformat:"s" == selected_tag %}bg-primary text-white{% else %}bg-transparent text-primary border border-primary{% endif %}">
+                {{ tag.name }}
+                </a>
             </li>
             {% endfor %}
         </ul>
-    </div>
-
-    <!-- Controlli di ordinamento -->
-    <div class="mb-3">
-        <h5>Ordina per:</h5>
-        <div class="btn-group" role="group" aria-label="Ordina per">
-            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for t in request.GET.tag %}tag={{ t }}&{% endfor %}sort=date_desc" class="btn btn-outline-secondary {% if sort == 'date_desc' %}active{% endif %}">Più recenti</a>
-            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for t in request.GET.tag %}tag={{ t }}&{% endfor %}sort=date_asc" class="btn btn-outline-secondary {% if sort == 'date_asc' %}active{% endif %}">Più vecchi</a>
-            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for t in request.GET.tag %}tag={{ t }}&{% endfor %}sort=title_asc" class="btn btn-outline-secondary {% if sort == 'title_asc' %}active{% endif %}">Titolo A-Z</a>
-            <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% for t in request.GET.tag %}tag={{ t }}&{% endfor %}sort=title_desc" class="btn btn-outline-secondary {% if sort == 'title_desc' %}active{% endif %}">Titolo Z-A</a>
-        </div>
     </div>
 
     <!-- Lista dei post -->
@@ -49,7 +41,7 @@
             <p class="card-text">
                 <small class="text-muted">Tags:</small>
                 {% for tag in post.tags.all %}
-                <span class="badge bg-secondary">{{ tag.name }}</span>
+                <span class="badge bg-primary text-white">{{ tag.name }}</span>
                 {% endfor %}
             </p>
         </div>

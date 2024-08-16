@@ -16,22 +16,22 @@ def about(request):
 
 
 def post_list(request):
-    query = request.GET.get('q')
-    tag_ids = request.GET.getlist('tag')
-    sort = request.GET.get('sort', 'date_desc')
-
+    """
+    Visualizza la lista di post con funzionalità di ricerca, filtro per tag e ordinamento.
+    """
     posts = Post.objects.all()
+    tags = Tag.objects.all()
 
+    tag_filter = request.GET.get('tag')
+    if tag_filter:
+        posts = posts.filter(tags__id=tag_filter)
+
+    query = request.GET.get('q')
     if query:
-        posts = posts.filter(
-            Q(title__icontains=query) |
-            Q(content__icontains=query)
-        ).distinct()
+        posts = posts.filter(title__icontains=query)
 
-    if tag_ids:
-        posts = posts.filter(tags__id__in=tag_ids).distinct()
-
-    # Ordinamento dei post
+    # Ordinamento
+    sort = request.GET.get('sort', 'date_desc')
     if sort == 'title_asc':
         posts = posts.order_by('title')
     elif sort == 'title_desc':
@@ -41,21 +41,23 @@ def post_list(request):
     else:
         posts = posts.order_by('-date_posted')
 
-    # Paginazione: 5 post per pagina
     paginator = Paginator(posts, 5)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
 
-    tags = Tag.objects.all()
     context = {
         'posts': posts,
         'tags': tags,
         'sort': sort,
+        'selected_tag': tag_filter,
     }
     return render(request, 'blog/post_list.html', context)
 
 
 def post_detail(request, pk):
+    """
+    Visualizza i dettagli di un singolo post, inclusi i commenti e il form per aggiungere un nuovo commento.
+    """
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.all()
 
@@ -78,6 +80,9 @@ def post_detail(request, pk):
 
 
 def post_create(request):
+    """
+    Crea un nuovo post. Se il form è valido, salva il post nel database e reindirizza alla lista dei post.
+    """
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -92,6 +97,9 @@ def post_create(request):
     return render(request, 'blog/post_form.html', {'form': form})
 
 def post_update(request, pk):
+    """
+    Aggiorna un post esistente. Se il form è valido, salva le modifiche e reindirizza alla lista dei post.
+    """
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -104,6 +112,9 @@ def post_update(request, pk):
     return render(request, 'blog/post_form.html', {'form': form})
 
 def post_delete(request, pk):
+    """
+    Elimina un post esistente e reindirizza alla lista dei post.
+    """
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         post.delete()
