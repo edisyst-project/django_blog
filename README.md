@@ -1,8 +1,3 @@
-Sistema di Tag: Aggiungere tag ai post e la possibilità di filtrare i post per tag.
-
-Ricerca nel Blog: Implementare una funzionalità di ricerca per i post.
-
-Commenti sui Post: Consenti agli utenti di commentare i post.
 
 Sistema di Autorizzazioni Personalizzate: Gestire i permessi in modo più granulare.
 

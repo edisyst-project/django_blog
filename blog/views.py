@@ -2,9 +2,9 @@ from django.contrib import messages
 from .forms import PostForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
+from django.db.models import Q
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Comment
+from .models import Post, Tag, Comment
 from .forms import CommentForm
 
 
@@ -16,30 +16,42 @@ def about(request):
 
 
 def post_list(request):
-    sort_by = request.GET.get('sort', 'date_posted')  # Imposta il parametro di ordinamento, default è 'date_posted'
-    order = request.GET.get('order', 'desc')  # Imposta l'ordine, default è 'desc'
+    query = request.GET.get('q')
+    tag_ids = request.GET.getlist('tag')
+    sort = request.GET.get('sort', 'date_desc')
 
-    if sort_by == 'title':
-        if order == 'asc':
-            posts = Post.objects.all().order_by('title')
-        else:
-            posts = Post.objects.all().order_by('-title')
-    else:  # Ordina per data
-        if order == 'asc':
-            posts = Post.objects.all().order_by('date_posted')
-        else:
-            posts = Post.objects.all().order_by('-date_posted')
+    posts = Post.objects.all()
 
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query)
+        ).distinct()
+
+    if tag_ids:
+        posts = posts.filter(tags__id__in=tag_ids).distinct()
+
+    # Ordinamento dei post
+    if sort == 'title_asc':
+        posts = posts.order_by('title')
+    elif sort == 'title_desc':
+        posts = posts.order_by('-title')
+    elif sort == 'date_asc':
+        posts = posts.order_by('date_posted')
+    else:
+        posts = posts.order_by('-date_posted')
+
+    # Paginazione: 5 post per pagina
     paginator = Paginator(posts, 5)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
 
+    tags = Tag.objects.all()
     context = {
-        'posts': page_obj,
-        'sort_by': sort_by,
-        'order': order
+        'posts': posts,
+        'tags': tags,
+        'sort': sort,
     }
-
     return render(request, 'blog/post_list.html', context)
 
 
