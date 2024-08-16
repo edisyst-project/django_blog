@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from faker import Faker
+import random
 from django.contrib.auth.models import User
 
 
@@ -28,16 +29,6 @@ class Post(models.Model):
         return self.title
 
 
-# Funzione per creare dati fake
-def create_fake_posts(n=5):
-    fake = Faker()
-    for _ in range(n):
-        Post.objects.create(
-            title=fake.sentence(),
-            content=fake.paragraph(),
-        )
-
-
 class Comment(models.Model):
     """
     Modello per rappresentare un commento su un post del blog.
@@ -53,3 +44,24 @@ class Comment(models.Model):
 
 
 
+# Funzione per creare tag fake
+def create_fake_tags(n=5):
+    fake = Faker()
+    tags = []
+    for _ in range(n):
+        tag = Tag.objects.create(name=fake.word())
+        tags.append(tag)
+    return tags
+
+# Funzione per creare post fake e assegnare tag
+def create_fake_posts(n=5):
+    fake = Faker()
+    tags = create_fake_tags()  # Crea e recupera i tag fake
+    for _ in range(n):
+        post = Post.objects.create(
+            title=fake.sentence(),
+            content=fake.paragraph(),
+        )
+        # Associa da 0 a 2 tag randomicamente
+        random_tags = random.sample(tags, k=random.randint(0, 2))
+        post.tags.set(random_tags)
