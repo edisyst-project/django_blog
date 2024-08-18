@@ -1,13 +1,4 @@
-
-Sistema di Autorizzazioni Personalizzate: Gestire i permessi in modo più granulare.
-
-Ottimizzazione e Migliorie di UI: Implementare altre migliorie usando Bootstrap per rendere l'interfaccia ancora più intuitiva.
-
-
-
-
 # Installazione
-
 ```bash
 # Clonare il repository
 git clone https://github.com/tuo-username/django_blog.git
@@ -63,7 +54,7 @@ myproject/
     └── wsgi.py
 ```
 
-Tipicamente avremo almeno una app installata nel progetto, che include i seguenti file
+Tipicamente avremo almeno una app installata nel progetto, che include i seguenti file:
 ```
 nome_progetto/
 │
@@ -91,31 +82,34 @@ nome_progetto/
 
 
 `manage.py`
-* È uno strumento da riga di comando per interagire con il tuo progetto Django.  
-* Usato per eseguire migrazioni, avviare il server di sviluppo, creare superuser, etc.
-  * Simile a artisan in Laravel, è uno script per interagire con il progetto Django (eseguire il server, fare migrazioni, ecc.).
+- strumento da riga di comando per interagire con il progetto Django.  
+- Usato per eseguire migrazioni, avviare il server, creare superuser, etc.
+  - Simile a `artisan` in Laravel
 
 
 `nome_progetto/` (cartella principale del progetto)
-* `init.py`: File vuoto che dice a Python che questa directory dovrebbe essere considerata un package Python.
-  *  Il file delle configurazioni del progetto, dove imposti database, applicazioni installate, e altre impostazioni globali. È l'equivalente di config/app.php in Laravel.
-* `settings.py`: Contiene tutte le configurazioni del progetto.
-* `urls.py`: Definisce le URL a livello di progetto.
-  * Definisce le rotte del progetto, simile a routes/web.php in Laravel.
-* `asgi.py` e `wsgi.py`: Punti di ingresso per server web compatibili con ASGI e WSGI.
+- `init.py`: File vuoto che dice a Python che questa directory dovrebbe essere considerata un package Python.
+- `settings.py`: Contiene tutte le configurazioni del progetto (DB, app installate, ecc.).
+  - È l'equivalente di `config/app.php` in Laravel.
+- `urls.py`: Definisce le URL a livello di progetto.
+  - Definisce le rotte del progetto, simile a `routes/web.php` in Laravel.
+- `asgi.py` e `wsgi.py`: Punti di ingresso per server web compatibili con ASGI e WSGI.
+
+
 
 ## Creare una App Django
-In Django, una "app" è un modulo indipendente all'interno del progetto, simile a un "modulo" in Laravel. Puoi avere più app in un progetto, e ogni app gestisce una parte dell'applicazione.
+In Django, una "app" è un modulo indipendente all'interno del progetto, simile a un "modulo" in Laravel.  
+Puoi avere più app in un progetto, e ogni app gestisce una parte dell'applicazione.
 
 `app1/` (un'applicazione Django)
-* `migrations/`: Contiene i file di migrazione del database.
-* `init.py`: Rende l'app un package Python.
-* `admin.py`: Configurazione per l'interfaccia di amministrazione di Django. Qui puoi registrare i modelli per farli apparire nel pannello di amministrazione di Django.
-* `apps.py`: Configurazione dell'applicazione.
-* `models.py`: Definisce i modelli del database (la "M" in MVT). sono l'equivalente delle classi Eloquent in Laravel.
-* `tests.py`: Test unitari per l'app.
-* `views.py`: Contiene la logica di presentazione (la "V" in MVT). in Django combinano il concetto di controller e le funzioni di visualizzazione.
-* `urls.py`: Definisce le URL specifiche dell'app.
+- `migrations/`: Contiene i file di migrazione del database.
+- `init.py`: Rende l'app un package Python.
+- `admin.py`: Configurazione per l'interfaccia di amministrazione di Django. Qui puoi registrare i modelli per farli apparire nel pannello di amministrazione di Django.
+- `apps.py`: Configurazione dell'applicazione.
+- `models.py`: Definisce i modelli del database (la "M" in MVT). sono l'equivalente delle classi Eloquent in Laravel.
+- `tests.py`: Test unitari per l'app.
+- `views.py`: Contiene la logica di presentazione (la "V" in MVT). in Django combinano il concetto di controller e le funzioni di visualizzazione.
+- `urls.py`: Definisce le URL specifiche dell'app.
 
 
 `templates/` (opzionale, può essere all'interno di ogni app)
