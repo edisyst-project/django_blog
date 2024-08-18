@@ -187,7 +187,7 @@ python manage.py migrate
 
 Avvia il server:
 ```shell
-python manage.py runserver
+python manage.py runserver 
 ```
 
 > ORA PUOI APRIRE IL FE: http://127.0.0.1:8000
